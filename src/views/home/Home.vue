@@ -4,46 +4,187 @@
     <home-swiper :banners="banners" />
     <recommend-view :recommends="recommends" />
     <feature-view />
+    <tab-control class="tab-control" :titles="['流行','新款','推荐']"/>
+
+
+    <ul>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+    <ul>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+
   </div>
 </template>
 
 <script>
-
-  import NavBar from "components/common/navbar/NavBar"
   import HomeSwiper from "./childComps/HomeSwiper"
   import RecommendView from "./childComps/RecommendView"
   import FeatureView from "./childComps/FeatureView"
 
-  import {getHomeMutidata} from "network/home"
+  import NavBar from "components/common/navbar/NavBar"
+  import TabControl from "components/content/tabControl/TabControl"
+
+  import { getHomeMutidata, getHomeGoods } from "network/home"
+
 
   export default {
     name: "home",
     components:{
-      NavBar,
       HomeSwiper,
       RecommendView,
-      FeatureView
+      FeatureView,
+
+      NavBar,
+      TabControl
     },
+
     data(){
       return {
         banners: [],
-        dKeywords: [],
-        keywords:[],
-        recommends: []
+        recommends: [],
+        goods:{
+          'pop': {page:0, list: []},
+          'new': {page:0, list: []},
+          'sell': {page:0, list: []}
+        }
       }
-
     },
     created(){
-      getHomeMutidata().then(res => {
-          console.log(res);
+      this.getHomeMutidata();
+      this.getHomeGoods('pop');
+      this.getHomeGoods('new');
+      this.getHomeGoods('sell');
+    },
+    
+    methods:{
+      getHomeMutidata(){
+        getHomeMutidata().then(res => {
+          // console.log(res);
           this.banners = res.data.banner.list
-          this.dKeywords = res.data.dKeyword.list
-          this.keywords = res.data.keywords.list
           this.recommends = res.data.recommend.list
         })
-        
-      
+      },
+      getHomeGoods(type){
+        const page = this.goods['pop'].page + 1;
+        getHomeGoods(type,page).then(res => {
+          this.goods[type].list.push(...res.data.list);
+          this.goods[type].page +=1;
+        }
+          
+        )
+      }
     }
+
+
   }
 </script>
 
@@ -61,5 +202,10 @@
     right: 0;
     top: 0;
     z-index: 9;
+  }
+
+  .tab-control {
+    position: sticky;
+    top: 44px;
   }
 </style>
