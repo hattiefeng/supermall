@@ -4,7 +4,7 @@
       v-for="(item,index) in titles" 
       :key="item.title" 
       :class="{active:currentIndex==index}"
-      @click="tabClick(index)">
+      @click="tabClick(index)"> 
       <span>{{item}}</span>
     </div>
   </div>
@@ -28,6 +28,8 @@ export default {
   methods:{
     tabClick(index){
       this.currentIndex = index
+      //传的参数 直接应用到父组件相关js代码中,template不用管参数
+      this.$emit('tabClick',index);
     }
   }
 }
@@ -39,7 +41,10 @@ export default {
     display: flex;
     text-align: center;
     font-size: 15px;
+    height: 40px;
+    line-height: 40px;
     background-color: #fff;
+    z-index: 9;
   }
 
   .tab-control-item {

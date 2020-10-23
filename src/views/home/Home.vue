@@ -4,8 +4,8 @@
     <home-swiper :banners="banners" />
     <recommend-view :recommends="recommends" />
     <feature-view />
-    <tab-control class="tab-control" :titles="['流行','新款','推荐']"/>
-
+    <tab-control class="tab-control" @tabClick="tabClick" :titles="['流行','新款','推荐']"/>
+    <goods-list :goodslist="showGoods"/>
 
     <ul>
       <li></li>
@@ -132,6 +132,7 @@
 
   import NavBar from "components/common/navbar/NavBar"
   import TabControl from "components/content/tabControl/TabControl"
+  import GoodsList from "components/content/goods/GoodsList"
 
   import { getHomeMutidata, getHomeGoods } from "network/home"
 
@@ -144,7 +145,8 @@
       FeatureView,
 
       NavBar,
-      TabControl
+      TabControl,
+      GoodsList
     },
 
     data(){
@@ -155,9 +157,18 @@
           'pop': {page:0, list: []},
           'new': {page:0, list: []},
           'sell': {page:0, list: []}
-        }
+        },
+        currentType: 'pop'
+      }
+      
+    },
+
+    computed:{
+      showGoods(){
+        return this.goods[this.currentType].list
       }
     },
+
     created(){
       this.getHomeMutidata();
       this.getHomeGoods('pop');
@@ -166,6 +177,25 @@
     },
     
     methods:{
+
+      //数据切换
+      tabClick(index){
+        switch (index){
+          case 0:
+            this.currentType = 'pop'
+            break
+          case 1:
+            this.currentType = 'new'
+            break
+          case 2:
+            this.currentType = 'sell'
+            break
+        }
+          
+        
+      },
+
+      //网络请求相关
       getHomeMutidata(){
         getHomeMutidata().then(res => {
           // console.log(res);
@@ -176,6 +206,7 @@
       getHomeGoods(type){
         const page = this.goods['pop'].page + 1;
         getHomeGoods(type,page).then(res => {
+          console.log(res);
           this.goods[type].list.push(...res.data.list);
           this.goods[type].page +=1;
         }
