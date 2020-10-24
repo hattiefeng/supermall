@@ -107,20 +107,18 @@
 
 <script>
 
-  import BScroll from '@better-scroll/core'
-  import PullUp from '@better-scroll/pull-up'
-
-  BScroll.use(PullUp)
+  import BScroll from 'better-scroll'
 
   export default {
     name: "category",
-
+    data(){
+      return {
+        scroll : null
+      }
+    },
     mounted() {
-      this.$nextTick(() => {
-        this.scroll = new BScroll(this.$refs.wrapper, {
-          pullUpLoad: true
+     this.scroll = new BScroll(this.$refs.wrapper, {
         })
-      })
     }
   }
 </script>
@@ -129,6 +127,6 @@
   .wrapper {
     height: 150px;
     background-color: aquamarine;
-    /* overflow: hidden; */
+    overflow: hidden;
   }
 </style>
