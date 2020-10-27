@@ -1,126 +1,14 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <home-swiper :banners="banners" />
-    <recommend-view :recommends="recommends" />
-    <feature-view />
-    <tab-control class="tab-control" @tabClick="tabClick" :titles="['流行','新款','推荐']"/>
-    <goods-list :goodslist="showGoods"/>
-
-    <ul>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ul>
-    <ul>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ul>
+    <scroll  class="content" ref="scroll">
+      <home-swiper :banners="banners" />
+      <recommend-view :recommends="recommends" />
+      <feature-view />
+      <tab-control class="tab-control" @tabClick="tabClick" :titles="['流行','新款','推荐']"/>
+      <goods-list :goodslist="showGoods"/>
+    </scroll>
+    <back-top @click.native="backClick"/>
 
   </div>
 </template>
@@ -133,6 +21,8 @@
   import NavBar from "components/common/navbar/NavBar"
   import TabControl from "components/content/tabControl/TabControl"
   import GoodsList from "components/content/goods/GoodsList"
+  import Scroll from "components/common/scroll/Scroll"
+  import BackTop from "components/content/backTop/BackTop"
 
   import { getHomeMutidata, getHomeGoods } from "network/home"
 
@@ -146,7 +36,9 @@
 
       NavBar,
       TabControl,
-      GoodsList
+      GoodsList,
+      Scroll,
+      BackTop
     },
 
     data(){
@@ -191,8 +83,10 @@
             this.currentType = 'sell'
             break
         }
-          
-        
+      },
+      
+      backClick(){
+        this.$refs.scroll.scrollTo(0,0);
       },
 
       //网络请求相关
@@ -219,9 +113,10 @@
   }
 </script>
 
-<style>
+<style scoped>
   #home{
     padding-top: 44px;
+    position: relative;
   }
 
   .home-nav {
@@ -238,5 +133,16 @@
   .tab-control {
     position: sticky;
     top: 44px;
+  }
+
+  .content {
+    /* 这里为什么不能加overflow */
+    /* overflow: hidden; */
+
+    position: absolute;
+    top: 44px;
+    bottom: 100px;
+    left: 0;
+    right: 0;
   }
 </style>
