@@ -1,14 +1,20 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <scroll  class="content" ref="scroll">
+    <scroll  class="content" 
+      ref="scroll" 
+      :probe-type="3" 
+      @scroll="contentScroll"
+      :pullUpLoad="true" 
+      @pullingUp="loadMore"
+      >
       <home-swiper :banners="banners" />
       <recommend-view :recommends="recommends" />
       <feature-view />
       <tab-control class="tab-control" @tabClick="tabClick" :titles="['流行','新款','推荐']"/>
       <goods-list :goodslist="showGoods"/>
     </scroll>
-    <back-top @click.native="backClick"/>
+    <back-top @click.native="backClick" v-show="showBack"/>
 
   </div>
 </template>
@@ -46,13 +52,13 @@
         banners: [],
         recommends: [],
         goods:{
-          'pop': {page:0, list: []},
-          'new': {page:0, list: []},
-          'sell': {page:0, list: []}
+          'pop': {page: 0, list: []},
+          'new': {page: 0, list: []},
+          'sell': {page: 0, list: []}
         },
-        currentType: 'pop'
+        currentType: 'pop',
+        showBack: false
       }
-      
     },
 
     computed:{
@@ -88,6 +94,16 @@
       backClick(){
         this.$refs.scroll.scrollTo(0,0);
       },
+      contentScroll(position){
+        // console.log(position.y);
+        this.showBack = (-position.y) > 1000
+      },
+      //加载更多
+      loadMore(){
+        this.getHomeGoods(this.currentType);
+        console.log(1);
+        this.$refs.scroll.refresh()
+      },
 
       //网络请求相关
       getHomeMutidata(){
@@ -100,12 +116,15 @@
       getHomeGoods(type){
         const page = this.goods['pop'].page + 1;
         getHomeGoods(type,page).then(res => {
-          console.log(res);
           this.goods[type].list.push(...res.data.list);
+          console.log(res.data.list);
           this.goods[type].page +=1;
-        }
           
-        )
+          //完成上拉加载更多
+          this.$refs.scroll.finishPullUp();
+        })
+
+
       }
     }
 
@@ -131,7 +150,7 @@
   }
 
   .tab-control {
-    position: sticky;
+    /* position: sticky; */
     top: 44px;
   }
 

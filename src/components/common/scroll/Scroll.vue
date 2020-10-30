@@ -11,21 +11,49 @@
   import BScroll from 'better-scroll'
 
   export default {
-
+    props: {
+      probeType: {
+        type: Number,
+        default: 0
+      },
+      pullUpLoad: {
+        type: Boolean,
+        default: false
+      }
+    },
     data(){
       return {
-        bscroll: null
+        scroll: null
       }
     },
     mounted(){
-      this.bscroll = new BScroll(this.$refs.wrapper,{
-        click: true
+      this.scroll = new BScroll(this.$refs.wrapper,{
+        click: true,
+        probeType: this.probeType,
+        pullUpLoad: this.pullUpLoad
       });
-      this.bscroll.scrollTo(0,0);
+      if(3 === this.probeType || 2 === this.probeType){
+        this.scroll.on('scroll', (position) => {
+          this.$emit('scroll', position);
+        });
+      }
+      //上拉加载更多
+      if(this.pullUpLoad){
+        this.scroll.on('pullingUp', ()=>{
+          this.$emit('pullingUp');   
+        })
+      } 
     },
+
     methods:{
       scrollTo(x, y, time=300){
-        this.bscroll.scrollTo(x, y, time);
+        this.scroll.scrollTo(x, y, time);
+      },
+      refresh(){
+        this.scroll && this.scroll.refresh();
+      },
+      finishPullUp(){
+        this.scroll && this.scroll.finishPullUp();
       }
     }
   }
