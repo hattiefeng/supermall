@@ -4,10 +4,9 @@ import router from './router'
 
 Vue.config.productionTip = false
 
+Vue.prototype.$bus = new Vue()
+
 new Vue({
   render: h => h(App),
   router
 }).$mount('#app')
-
-
-console.log(['1', '2', '3'].map(parseInt));

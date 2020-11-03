@@ -5,8 +5,7 @@
       ref="scroll" 
       :probe-type="3" 
       @scroll="contentScroll"
-      :pullUpLoad="true" 
-      @pullingUp="loadMore"
+
       >
       <home-swiper :banners="banners" />
       <recommend-view :recommends="recommends" />
@@ -68,14 +67,37 @@
     },
 
     created(){
+      //请求多个数据
       this.getHomeMutidata();
+
+      //请求商品数据
       this.getHomeGoods('pop');
       this.getHomeGoods('new');
       this.getHomeGoods('sell');
+
+
     },
     
-    methods:{
+    mounted(){
+      //图片加载完成后刷新scroll
+      this.$bus.$on('itemImgLoad',()=>{
+        this.$refs.scroll.refresh();
+      });
+    },
 
+    methods:{
+      
+      //防抖
+      debounce(func, ...args){
+        let timer = null
+        if(timer) clearTimeout(timer)
+        return function(){
+          timer = setTimeout(()=>{
+            func.apply(this, args)
+          },delay)
+        }
+      },
+      
       //数据切换
       tabClick(index){
         switch (index){
@@ -99,11 +121,11 @@
         this.showBack = (-position.y) > 1000
       },
       //加载更多
-      loadMore(){
-        this.getHomeGoods(this.currentType);
-        console.log(1);
-        this.$refs.scroll.refresh()
-      },
+      // loadMore(){
+      //   this.getHomeGoods(this.currentType);
+      //   console.log(1);
+      //   this.$refs.scroll.refresh()
+      // },
 
       //网络请求相关
       getHomeMutidata(){
@@ -117,11 +139,11 @@
         const page = this.goods['pop'].page + 1;
         getHomeGoods(type,page).then(res => {
           this.goods[type].list.push(...res.data.list);
-          console.log(res.data.list);
+          // console.log(res.data.list);
           this.goods[type].page +=1;
           
           //完成上拉加载更多
-          this.$refs.scroll.finishPullUp();
+          // this.$refs.scroll.finishPullUp();
         })
 
 
