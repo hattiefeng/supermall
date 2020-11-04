@@ -30,7 +30,7 @@
       //1.创建Scroll对象
       this.scroll = new BScroll(this.$refs.wrapper,{
         click: true,
-        probeType: this.probeType,
+        probeType: this.probeType
         // pullUpLoad: this.pullUpLoad
       });
       //2.监听滚动的位置
@@ -52,9 +52,11 @@
         this.scroll.scrollTo(x, y, time);
       },
       refresh(){
-        console.log("refresh");
         this.scroll.refresh();
-        console.log(this.scroll.scrollerHeight);
+        // console.log(this.scroll.scrollerHeight);
+        // this.scroll.on('scroll', (position) => {
+        //   console.log(position.y);
+        // });
       },
       finishPullUp(){
         this.scroll && this.scroll.finishPullUp();

@@ -4,9 +4,7 @@
     <scroll  class="content" 
       ref="scroll" 
       :probe-type="3" 
-      @scroll="contentScroll"
-
-      >
+      @scroll="contentScroll">
       <home-swiper :banners="banners" />
       <recommend-view :recommends="recommends" />
       <feature-view />
@@ -80,18 +78,19 @@
     
     mounted(){
       //图片加载完成后刷新scroll
+      const refresh = this.debounce(this.$refs.scroll.refresh, 50);
       this.$bus.$on('itemImgLoad',()=>{
-        this.$refs.scroll.refresh();
+        refresh();
       });
     },
 
     methods:{
       
       //防抖
-      debounce(func, ...args){
+      debounce(func, delay){
         let timer = null
-        if(timer) clearTimeout(timer)
-        return function(){
+        if (timer) clearTimeout(timer)
+        return function(...args){
           timer = setTimeout(()=>{
             func.apply(this, args)
           },delay)
@@ -156,7 +155,10 @@
 
 <style scoped>
   #home{
-    padding-top: 44px;
+    /* 当前屏幕可见高度100%,没有内容时也会被撑开 */
+    height: 100vh;
+
+    /* padding-top: 44px; */
     position: relative;
   }
 
@@ -177,12 +179,11 @@
   }
 
   .content {
-    /* 这里为什么不能加overflow */
-    /* overflow: hidden; */
+    overflow: hidden;
 
     position: absolute;
     top: 44px;
-    bottom: 100px;
+    bottom: 49px;
     left: 0;
     right: 0;
   }
