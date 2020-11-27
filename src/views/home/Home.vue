@@ -1,14 +1,18 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
+    <tab-control v-show="isFixed" ref="tabControl1" class="tab-control" @tabClick="tabClick" :titles="['流行','新款','推荐']"/>
     <scroll  class="content" 
       ref="scroll" 
       :probe-type="3" 
       @scroll="contentScroll">
-      <home-swiper :banners="banners" />
+      <home-swiper :banners="banners" @swiperImgLoad="swiperImgLoad"/>
       <recommend-view :recommends="recommends" />
       <feature-view />
-      <tab-control class="tab-control" @tabClick="tabClick" :titles="['流行','新款','推荐']"/>
+      <tab-control 
+       ref="tabControl2"
+       @tabClick="tabClick" 
+       :titles="['流行','新款','推荐']"/>
       <goods-list :goodslist="showGoods"/>
     </scroll>
     <back-top @click.native="backClick" v-show="showBack"/>
@@ -54,7 +58,9 @@
           'sell': {page: 0, list: []}
         },
         currentType: 'pop',
-        showBack: false
+        showBack: false,
+        tabOffsetTop: 0,
+        isFixed: false
       }
     },
 
@@ -72,8 +78,6 @@
       this.getHomeGoods('pop');
       this.getHomeGoods('new');
       this.getHomeGoods('sell');
-
-
     },
     
     mounted(){
@@ -97,7 +101,7 @@
         }
       },
       
-      //数据切换
+      //点击tabControl 数据切换
       tabClick(index){
         switch (index){
           case 0:
@@ -110,14 +114,19 @@
             this.currentType = 'sell'
             break
         }
+        // 不论点击哪个tabControl,两个tabControl都一样变化
+        this.$refs.tabControl1.currentIndex = index;
+        this.$refs.tabControl2.currentIndex = index;
       },
       
       backClick(){
         this.$refs.scroll.scrollTo(0,0);
       },
       contentScroll(position){
-        // console.log(position.y);
+        //展示回到顶部
         this.showBack = (-position.y) > 1000
+        //显示吸顶效果
+        this.isFixed = (-position.y) > this.tabOffsetTop
       },
       //加载更多
       // loadMore(){
@@ -126,6 +135,9 @@
       //   this.$refs.scroll.refresh()
       // },
 
+      swiperImgLoad(){
+        this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
+      },
       //网络请求相关
       getHomeMutidata(){
         getHomeMutidata().then(res => {
@@ -144,12 +156,8 @@
           //完成上拉加载更多
           // this.$refs.scroll.finishPullUp();
         })
-
-
       }
     }
-
-
   }
 </script>
 
@@ -166,16 +174,17 @@
     background-color: var(--color-tint); 
     color: #fff;
 
-    position: fixed;
+    /* 用了better-scroll后就不需要fixed了,此区域不在滚动范围内 */
+    /* position: fixed;
     left: 0;
     right: 0;
     top: 0;
-    z-index: 9;
+    z-index: 9; */
   }
 
   .tab-control {
-    /* position: sticky; */
-    top: 44px;
+    position: relative;
+    z-index: 9;
   }
 
   .content {
