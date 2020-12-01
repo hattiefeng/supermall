@@ -60,7 +60,8 @@
         currentType: 'pop',
         showBack: false,
         tabOffsetTop: 0,
-        isFixed: false
+        isFixed: false,
+        saveY: 0
       }
     },
 
@@ -88,6 +89,14 @@
       });
     },
 
+    activated(){
+      this.$refs.scroll.scrollTo(0, this.saveY, 0);
+      this.$refs.scroll.refresh();
+    },
+
+    deactivated(){
+      this.saveY = this.$refs.scroll.getScrollY();
+    },
     methods:{
       
       //防抖
