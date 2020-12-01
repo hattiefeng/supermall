@@ -42,6 +42,7 @@
       //3.监听上拉事件
       if(this.pullUpLoad){
         this.scroll.on('pullingUp',()=>{
+          debugger;
           this.$emit('pullingUp')
           console.log(1);
         })

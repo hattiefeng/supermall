@@ -10,24 +10,24 @@
 </template>
 
 <script>
-export default {
-  props:{
-    goodsItem:{
-      type: Object,
-      default(){
-        return {}
+  export default {
+    props: {
+      goodsItem: {
+        type: Object,
+        default() {
+          return {}
+        }
+      }
+    },
+    methods: {
+      imgLoad() {
+        this.$bus.$emit("itemImgLoad");
+      },
+      itemClick() {
+        this.$router.push("/detail/" + this.goodsItem.iid + "?u=" + new Date().getTime());
       }
     }
-  },
-  methods:{
-    imgLoad(){
-      this.$bus.$emit("itemImgLoad");
-    },
-    itemClick(){
-      this.$router.push("/detail/"+this.goodsItem.iid);
-    }
   }
-}
 </script>
 
 <style>
@@ -76,6 +76,6 @@ export default {
     top: -1px;
     width: 14px;
     height: 14px;
-    background: url("~assets/img/common/collect.svg") 0 0/14px 14px;
+    background: url('~assets/img/common/collect.svg') 0 0/14px 14px;
   }
 </style>

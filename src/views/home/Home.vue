@@ -9,8 +9,6 @@
       :pull-up-load="true"
       @pullingUp="loadMore"
       >
-      <home-swiper :banners="banners" />
-      @scroll="contentScroll">
       <home-swiper :banners="banners" @swiperImgLoad="swiperImgLoad"/>
       <recommend-view :recommends="recommends" />
       <feature-view />

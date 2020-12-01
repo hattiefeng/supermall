@@ -36,6 +36,7 @@ const routes = [{
   },
   {
     path: '/detail/:iid',
+    name:'goodDetail',
     component: Detail
   }
 
