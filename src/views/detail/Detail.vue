@@ -15,7 +15,8 @@
     },
     data() {
       return {
-        iid: null
+        iid: null,
+        topImages: []
       }
     },
     watch: {
@@ -25,8 +26,17 @@
           // 判断条件1  判断传递值的变化
           this.iid = this.$route.params.iid;
           //获取文章数据
+          getGoodsDetail(this.iid).then(res => {
+            console.log(res);
+            this.topImages = res.result.itemInfo.topImages;
+            console.log(this.topImages);
+          }).catch(err => {
+            console.log("数据请求失败");
+          })
+          
         }
       }
+
     }
 
   }
