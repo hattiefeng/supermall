@@ -2,7 +2,7 @@
   <div>
     <detail-nav-bar></detail-nav-bar>
     <detail-swiper :top-images="topImages"></detail-swiper>
-    <detail-base-info :goods="goods"></detail-base-info>
+    <detail-base-info :goods="goods" v-if="goods"></detail-base-info>
   </div>
 </template>
 
@@ -27,7 +27,7 @@
       return {
         iid: null,
         topImages: [],
-        goods: {}
+        goods: null
       }
     },
     created() {
@@ -36,10 +36,10 @@
         const data = res.result;
         // console.log(data);
         this.topImages = data.itemInfo.topImages;
-        
+
         this.goods = new Goods(data.itemInfo, data.columns, data.shopInfo.services);
         console.log(this.goods);
-        
+
       }).catch(err => {
         console.log("数据请求失败");
       })
