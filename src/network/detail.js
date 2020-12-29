@@ -24,8 +24,23 @@ export class Goods {
 
     this.desc = itemInfo.desc; //温馨提示
     this.discount = itemInfo.discountDesc; //特价描述
+    this.discountBgColor = itemInfo.discountBgColor
 
     this.columns = columns; //销量 + 收藏
     this.services = services; //快递等服务
   }
+}
+
+
+export class Shop {
+  constructor(shopInfo){
+    this.shopLogo = shopInfo.shopLogo;
+    this.name = shopInfo.name;
+    this.cSells = shopInfo.cSells;
+    this.cGoods = shopInfo.cGoods;
+    this.score = shopInfo.score;
+    this.shopUrl = shopInfo.shopUrl;
+    this.allGoodsUrl = shopInfo.allGoodsUrl;
+  }
+  
 }

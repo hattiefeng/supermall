@@ -1,13 +1,13 @@
 <template>
-  <div>
+  <div class="detail-nav-bar">
     <nav-bar>
       <div slot="left" class="back" @click="backClick">
         <img src="~assets/img/common/back.svg" alt="">
       </div>
       <div slot="center" class="title">
-        <div class="titleItem" 
-          v-for="(item, index) in titles" :key="item.iid" 
-          :class="{active:index===currentIndex}" 
+        <div class="titleItem"
+          v-for="(item, index) in titles" :key="item.iid"
+          :class="{active:index===currentIndex}"
           @click="clickTitle(index)">
           {{item}}
         </div>
@@ -45,6 +45,12 @@ export default {
 </script>
 
 <style>
+
+  .detail-nav-bar {
+    position: relative;
+    z-index: 9;
+    background-color: #fff;
+  }
   .active {
     color: var(--color-high-text)
   }
