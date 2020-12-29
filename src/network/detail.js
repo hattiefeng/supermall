@@ -33,7 +33,7 @@ export class Goods {
 
 
 export class Shop {
-  constructor(shopInfo){
+  constructor(shopInfo) {
     this.shopLogo = shopInfo.shopLogo;
     this.name = shopInfo.name;
     this.cSells = shopInfo.cSells;
@@ -42,5 +42,14 @@ export class Shop {
     this.shopUrl = shopInfo.shopUrl;
     this.allGoodsUrl = shopInfo.allGoodsUrl;
   }
-  
+
+}
+
+export class GoodsParam {
+  constructor(info, rule) {
+    // images可能没有值
+    this.image = info.images ? info.images[0] : '';
+    this.infos = info.set;
+    this.sizes = rule.tables;
+  }
 }
