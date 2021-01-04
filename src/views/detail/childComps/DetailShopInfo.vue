@@ -44,7 +44,7 @@
       }
     },
     filters: {
-      sellCountFilter : function (value) {
+      sellCountFilter(value) {
         return value<10000 ? value : (value/10000).toFixed(1) + '万';
       }
     }
