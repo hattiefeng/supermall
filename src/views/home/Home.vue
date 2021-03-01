@@ -31,10 +31,11 @@
   import TabControl from "components/content/tabControl/TabControl"
   import GoodsList from "components/content/goods/GoodsList"
   import Scroll from "components/common/scroll/Scroll"
-  import BackTop from "components/content/backTop/BackTop"
+  
 
   import { getHomeMutidata, getHomeGoods } from "network/home"
   import {debounce} from "common/utils"
+  import {itemListenerMixin, backUpMixin} from "common/mixin"
 
 
   export default {
@@ -47,10 +48,9 @@
       NavBar,
       TabControl,
       GoodsList,
-      Scroll,
-      BackTop
+      Scroll
     },
-
+    mixins:[itemListenerMixin, backUpMixin],
     data(){
       return {
         banners: [],
@@ -61,7 +61,7 @@
           'sell': {page: 0, list: []}
         },
         currentType: 'pop',
-        showBack: false,
+        
         tabOffsetTop: 0,
         isFixed: false,
         saveY: 0
@@ -85,11 +85,7 @@
     },
 
     mounted(){
-      //图片加载完成后刷新scroll
-      const refresh = debounce(this.$refs.scroll.refresh, 50);
-      this.$bus.$on('itemImgLoad',()=>{
-        refresh();
-      });
+
     },
 
     activated(){
@@ -99,6 +95,7 @@
 
     deactivated(){
       this.saveY = this.$refs.scroll.getScrollY();
+      this.$bus.$off('itemImgLoad', this.itemImgListener);
     },
     methods:{
 
@@ -132,9 +129,7 @@
         this.$refs.tabControl2.currentIndex = index;
       },
 
-      backClick(){
-        this.$refs.scroll.scrollTo(0,0);
-      },
+
       contentScroll(position){
         //展示回到顶部
         this.showBack = (-position.y) > 1000

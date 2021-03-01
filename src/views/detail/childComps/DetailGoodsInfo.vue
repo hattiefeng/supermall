@@ -12,6 +12,9 @@
         <img v-for="(item, index2) in detailImages.list" :key="index2" :src="item" @load="imgLoad" alt="">
       </div>
     </div>
+        <!-- <div class="info-list">
+      <img v-for="(item, index) in detailInfo.detailImage[0].list" :key="index" :src="item" @load="imgLoad" alt="">
+    </div> -->
   </div>
 </template>
 
@@ -20,10 +23,7 @@ export default {
   name: "DetailGoodsInfo",
   props:{
     detailInfo:{
-      type: Object,
-      default(){
-        return {}
-      }
+      type: Object
     }
   },
   data(){
@@ -35,22 +35,49 @@ export default {
   methods:{
     //imgLoad 循环加载图片 每加载一张,imgLoad()方法调用一次
     imgLoad(){
+      // console.log("imageLoad1");
       // this.counter累计 图片加载张数 当累计张数等于总张数时,调用better-scroll的refresh
+      // console.log(this.imgLength);
       if(++this.counter === this.imgLength){
+        
+        // console.log("imageLoad2");
         this.$emit("imageLoad");
       }
     }
   },
   // watch监听detailInfo属性的变化
   watch:{
-    detailInfo(){
-      //获取图片个数
-      this.imgLength = 0;
-      for(var i = 0; i < this.detailInfo.detailImage.length; i++){
-        this.imgLength += this.detailInfo.detailImage[i].list.length;
-      }
+    //这种方式监听不到
+  //   detailInfo(){
+  //     //获取图片个数
+  //     this.imgLength = 0;
+  //     for(var i = 0; i < this.detailInfo.detailImage.length; i++){
+  //       this.imgLength += this.detailInfo.detailImage[i].list.length;
+  //     }
+  // }
+
+    // detailInfo() {
+    //   console.log("watch");
+	  //     // 获取图片的个数
+    //     this.imgLength = this.detailInfo.detailImage[0].list.length
+    //     console.log(this.imgLength);
+    //     immediate=true
+        
+    // },
+    'detailInfo': {
+      handler(newval, old) {
+      //  this.imgLength = this.detailInfo.detailImage[0].list.length
+        this.imgLength = 0;
+        for(var i = 0; i < this.detailInfo.detailImage.length; i++){
+          this.imgLength += this.detailInfo.detailImage[i].list.length;
+        }
+      },
+      immediate: true,
+      // deep: true
+    }
+
   }
-}}
+}
 </script>
 
 <style scoped>

@@ -35,6 +35,7 @@ export default {
   methods:{
     clickTitle(index){
       this.currentIndex = index;
+      this.$emit('clickTitle',index);
     },
 
     backClick(){
@@ -44,7 +45,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
   .detail-nav-bar {
     position: relative;

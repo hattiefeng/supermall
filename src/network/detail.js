@@ -9,6 +9,12 @@ export function getGoodsDetail(iid) {
   })
 }
 
+
+export function getRecommend() {
+  return request({
+    url: '/recommend'
+  })
+}
 /*
 lowNowPrice: "109.00"
 lowPrice: "155.72"
@@ -20,6 +26,7 @@ export class Goods {
     this.title = itemInfo.title; //标题
     this.lowNowPrice = itemInfo.lowNowPrice; //提交金额
     this.price = itemInfo.price; //现价 ¥
+    this.realPrice = itemInfo.lowNowPrice;
     this.oldPrice = itemInfo.oldPrice; //原价 ¥
 
     this.desc = itemInfo.desc; //温馨提示
