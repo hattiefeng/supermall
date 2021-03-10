@@ -5,9 +5,6 @@
     <scroll class="content" ref="scroll" :probe-type=3 @scroll="contentScroll">
      
       <detail-swiper :top-images="topImages"></detail-swiper>
-      <ul>
-        <li v-for="item in $store.state.cartList" :key="item.iid">{{item}}</li>
-      </ul> 
       <detail-base-info  v-if="goods" :goods="goods" ></detail-base-info>
       <detail-shop-info v-if="shop" :shop="shop"></detail-shop-info>
       <detail-goods-info v-if="detailInfo" :detail-info="detailInfo" @imageLoad="imageLoad"></detail-goods-info>
@@ -185,6 +182,7 @@
 
         // this.$store.commit('addCart', product);
         this.$store.dispatch('addCart', product);
+        alert('添加成功')
       },
     },
 
