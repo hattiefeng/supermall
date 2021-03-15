@@ -30,7 +30,7 @@ export default {
 
 <style scoped>
   .cart-list {
-    height: calc(100% - 45px - 49px);
+    height: calc(100% - 45px - 49px - 40px);
   }
 
   .content {

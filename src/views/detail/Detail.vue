@@ -36,6 +36,9 @@
   import {getGoodsDetail, Goods, Shop, GoodsParam, getRecommend} from 'network/detail.js'
   import { itemListenerMixin, backUpMixin } from "common/mixin.js"
   import { debounce } from 'common/utils'
+
+  //将actions中的方法映射到methods中
+  import { mapActions } from 'vuex'
   
 
   export default {
@@ -130,7 +133,7 @@
 
     },
     methods:{
-      
+      ...mapActions(['addCart']),
       imageLoad(){
 
         this.$refs.scroll.refresh();
@@ -181,8 +184,14 @@
         // console.log(product);
 
         // this.$store.commit('addCart', product);
-        this.$store.dispatch('addCart', product);
-        alert('添加成功')
+        //dispatch 返回一个promise
+        // this.$store.dispatch('addCart', product).then((res)=>{
+        //   console.log(res);
+        // })
+        // 映射
+        this.addCart(product).then((res)=>{
+          console.log(res);
+        })
       },
     },
 
