@@ -2,6 +2,7 @@
   <div class="detail">
     
     <detail-nav-bar class="detail-nav" @clickTitle="clickTitle" ref="detailNav"/>
+    
     <scroll class="content" ref="scroll" :probe-type=3 @scroll="contentScroll">
      
       <detail-swiper :top-images="topImages"></detail-swiper>
@@ -54,15 +55,14 @@
       DetailRecommend,
       DetailCommentInfo,
       DetailBottomBar,
-
       getGoodsDetail,
       Goods,
       Shop,
       GoodsParam,
       getRecommend
     },
-
-    mixins:[itemListenerMixin, backUpMixin],
+   
+   mixins:[itemListenerMixin, backUpMixin],
 
     data() {
       return {
@@ -190,7 +190,8 @@
         // })
         // 映射
         this.addCart(product).then((res)=>{
-          console.log(res);
+          //toast
+          this.$toast.show(res, 3000);
         })
       },
     },

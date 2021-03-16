@@ -7,7 +7,7 @@
     <div class="price">
       合计:  {{totalPricce}}
     </div>
-    <div class="calculate">去计算({{checkLength}})</div>
+    <div class="calculate" @click="calcClick">去计算({{checkLength}})</div>
   </div>
 </template>
 
@@ -43,12 +43,19 @@ export default {
     }
   },
   methods: {
+    //点击全选按钮
     clickCheck(){
       //数组遍历过程中,做了修改操作,需要分开写
       if(this.checkAll){ //全部选中
         this.cartList.forEach(item => item.checked = false);
       }else{ //部分选中或全不选中
         this.cartList.forEach(item => item.checked = true);
+      }
+    },
+    //点击去计算
+    calcClick(){
+      if(!this.checkAll){
+        this.$toast.show("请选择结算商品",3000);
       }
     }
   }
